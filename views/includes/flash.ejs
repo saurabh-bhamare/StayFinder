@@ -1,0 +1,26 @@
+<% if (typeof success !== "undefined" && success.length > 0) { %>
+  <div class="alert-custom alert-custom--success" role="alert" id="alert-success">
+    <span class="alert-custom__icon">
+      <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <span class="alert-custom__message"><%= success[0] %></span>
+    <button class="alert-custom__close" onclick="this.closest('.alert-custom').style.display='none'" aria-label="Close">✕</button>
+  </div>
+<% } %>
+
+<% if (typeof error !== "undefined" && error.length > 0) { %>
+  <div class="alert-custom alert-custom--danger" role="alert" id="alert-error">
+    <span class="alert-custom__icon">
+      <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M9 5.5v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <circle cx="9" cy="12" r="0.8" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="alert-custom__message"><%= error[0] %></span>
+    <button class="alert-custom__close" onclick="this.closest('.alert-custom').style.display='none'" aria-label="Close">✕</button>
+  </div>
+<% } %>

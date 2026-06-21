@@ -1,0 +1,100 @@
+<% layout("/layouts/boilerplate") %>
+
+<h2><%= listing.title %> Dashboard</h2>
+
+<div class="row mb-4">
+  <div class="col-md-3">
+    <h4><%= totalBookings %></h4>
+    <p>Total Bookings</p>
+  </div>
+  <div class="col-md-3">
+    <h4>₹<%= totalRevenue %></h4>
+    <p>Total Revenue</p>
+  </div>
+  <div class="col-md-3">
+    <h4><%= cancellationRate %>%</h4>
+    <p>Cancellation Rate</p>
+  </div>
+</div>
+
+<!-- 📊 Charts -->
+<div class="row mt-5">
+  <div class="col-md-6">
+    <h5>Monthly Bookings</h5>
+    <canvas id="bookingsChart"></canvas>
+  </div>
+
+  <div class="col-md-6">
+    <h5>Cancellation Trend</h5>
+    <canvas id="cancelChart"></canvas>
+  </div>
+</div>
+
+<!-- Booking History -->
+<h4 class="mt-5">Booking History</h4>
+<table class="table">
+  <tr>
+    <th>User</th>
+    <th>Check-In</th>
+    <th>Check-Out</th>
+    <th>Price</th>
+  </tr>
+
+  <% bookings.forEach(b => { %>
+    <tr>
+      <td><%= b.user.username %></td>
+      <td><%= b.checkIn.toDateString() %></td>
+      <td><%= b.checkOut.toDateString() %></td>
+      <td>₹<%= b.totalPrice %></td>
+    </tr>
+  <% }) %>
+</table>
+
+<!-- Chart.js -->
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+// ✅ Backend data (ONLY ONCE)
+const monthlyData = <%- JSON.stringify(monthlyBookings) %>;
+const cancelData = <%- JSON.stringify(cancellationTrend) %>;
+
+// ==========================
+// 📊 BOOKINGS CHART
+// ==========================
+const bookingLabels = monthlyData.map(d => months[d._id - 1]);
+const bookingCounts = monthlyData.map(d => d.count);
+
+new Chart(document.getElementById("bookingsChart"), {
+  type: "bar",
+  data: {
+    labels: bookingLabels,
+    datasets: [{
+      label: "Bookings",
+      data: bookingCounts
+    }]
+  }
+});
+
+// ==========================
+// 📉 CANCELLATION CHART
+// ==========================
+const cancelLabels = cancelData.map(d => months[d._id - 1]);
+
+const cancelRates = cancelData.map(d =>
+  d.total === 0 ? 0 : ((d.cancelled / d.total) * 100).toFixed(1)
+);
+
+new Chart(document.getElementById("cancelChart"), {
+  type: "line",
+  data: {
+    labels: cancelLabels,
+    datasets: [{
+      label: "Cancellation %",
+      data: cancelRates
+    }]
+  }
+});
+</script>

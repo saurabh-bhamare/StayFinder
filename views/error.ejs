@@ -1,0 +1,105 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+:root {
+  --bg: #000000;
+  --red-bg: #0f0505;
+  --red-border: #3a0d0d;
+  --red: #E24B4A;
+  --text: #f0f0f0;
+  --sub: #888888;
+  --divider: #1e1e1e;
+}
+
+body { background: var(--bg); }
+
+.error-wrap {
+  min-height: 70vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 16px;
+}
+
+.error-card {
+  background: var(--red-bg);
+  border: 0.5px solid var(--red-border);
+  border-radius: 20px;
+  padding: 40px 36px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+}
+
+.error-icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #1a0808; border: 0.5px solid var(--red-border);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.error-label {
+  font-size: 12px; font-weight: 500; color: var(--red);
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px;
+}
+
+.error-message {
+  font-size: 20px; font-weight: 500;
+  color: var(--text); margin-bottom: 10px; line-height: 1.4;
+}
+
+.error-hint {
+  font-size: 13px; color: var(--sub);
+  line-height: 1.6; margin-bottom: 28px;
+}
+
+.error-divider {
+  border: none; border-top: 0.5px solid var(--red-border); margin-bottom: 24px;
+}
+
+.btn-row { display: flex; gap: 10px; justify-content: center; }
+
+.btn-home {
+  padding: 10px 22px; border-radius: 10px;
+  background: #f0f0f0; color: #000;
+  border: none; font-size: 13px; font-weight: 500;
+  cursor: pointer; text-decoration: none; transition: .15s;
+}
+.btn-home:hover { background: #ffffff; }
+
+.btn-back {
+  padding: 10px 22px; border-radius: 10px;
+  background: transparent; color: var(--sub);
+  border: 0.5px solid #222222; font-size: 13px;
+  cursor: pointer; text-decoration: none; transition: .15s;
+}
+.btn-back:hover { background: #111111; color: var(--text); }
+</style>
+
+<div class="error-wrap">
+  <div class="error-card">
+
+    <div class="error-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="#E24B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+
+    <div class="error-label">Something went wrong</div>
+
+    <div class="error-message"><%= err.message %></div>
+
+    <div class="error-hint">
+      The page you're looking for doesn't exist,<br>or you don't have permission to view it.
+    </div>
+
+    <hr class="error-divider">
+
+    <div class="btn-row">
+      <a href="/" class="btn-home">Go home</a>
+      <a href="javascript:history.back()" class="btn-back">Go back</a>
+    </div>
+
+  </div>
+</div>

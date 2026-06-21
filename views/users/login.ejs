@@ -1,0 +1,184 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+body {
+  background-color: #0f0f0f;
+}
+
+.login-container {
+  max-width: 380px;
+  margin: 80px auto;
+}
+
+.login-card {
+  background: #1a1a1a;
+  padding: 36px 32px;
+  border-radius: 20px;
+  border: 0.5px solid #2e2e2e;
+}
+
+.login-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.login-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: #ff385c;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.login-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #f5f5f5;
+  text-align: center;
+  margin: 0 0 4px;
+}
+
+.login-sub {
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+  margin: 0 0 28px;
+}
+
+.form-label {
+  font-size: 12px;
+  color: #aaa;
+  letter-spacing: 0.02em;
+}
+
+.form-control {
+  background: #111;
+  border: 0.5px solid #2e2e2e;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: #f0f0f0;
+}
+
+.form-control::placeholder {
+  color: #555;
+}
+
+.form-control:focus {
+  background: #111;
+  border-color: #ff385c;
+  color: #f0f0f0;
+  box-shadow: none;
+}
+
+.btn-airbnb {
+  background: #ff385c;
+  color: white;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 500;
+  border: none;
+  width: 100%;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+
+.btn-airbnb:hover {
+  background: #e31c5f;
+  color: white;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 0.5px;
+  background: #2e2e2e;
+}
+
+.divider-text {
+  font-size: 12px;
+  color: #555;
+}
+
+.btn-google {
+  width: 100%;
+  background: transparent;
+  border: 0.5px solid #2e2e2e;
+  border-radius: 12px;
+  padding: 11px;
+  font-size: 14px;
+  color: #d0d0d0;
+  transition: background 0.15s;
+}
+
+.btn-google:hover {
+  background: #222;
+  color: #d0d0d0;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #666;
+}
+
+.login-footer a {
+  color: #ff385c;
+  text-decoration: none;
+}
+</style>
+
+<div class="login-container">
+  <div class="login-card">
+
+    <div class="login-logo">
+      <div class="login-logo-icon">🏠</div>
+    </div>
+
+    <p class="login-title">Welcome back</p>
+    <p class="login-sub">Sign in to your account</p>
+
+    <form action="/login" method="POST" class="needs-validation" novalidate>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input name="username" id="username" type="text" class="form-control" placeholder="Enter your username" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input name="password" id="password" type="password" class="form-control" placeholder="••••••••" required />
+      </div>
+
+      <button class="btn-airbnb">Sign in</button>
+
+    </form>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">or</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <a href="/auth/google" class="btn btn-google">
+      <i class="fa-brands fa-google me-2"></i> Continue with Google
+    </a>
+
+    <div class="login-footer">
+      Don't have an account? <a href="/signup">Sign up</a>
+    </div>
+
+  </div>
+</div>

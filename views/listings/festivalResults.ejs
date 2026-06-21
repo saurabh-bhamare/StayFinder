@@ -1,0 +1,242 @@
+<style>
+  body {
+    background: #121212;
+    color: #f1f1f1;
+    font-family: sans-serif;
+  }
+
+  .hotels-section {
+    padding: 1.5rem 0;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .hotels-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888;
+    margin: 0 0 0.5rem;
+  }
+
+  .hotels-heading {
+    font-size: 22px;
+    font-weight: 500;
+    color: #f1f1f1;
+    margin: 0 0 1.5rem;
+  }
+
+  /* Filter form */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-bar input {
+    background: #1e1e1e;
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: #f1f1f1;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 180px;
+  }
+
+  .filter-bar input::placeholder {
+    color: #666;
+  }
+
+  .filter-bar input:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .filter-bar button {
+    background: #1e1e1e;
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 8px 18px;
+    color: #f1f1f1;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .filter-bar button:hover {
+    background: #2a2a2a;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .filter-bar button:active {
+    transform: scale(0.98);
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.08);
+    margin: 0 0 1.5rem;
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 3rem 1rem;
+    background: #1e1e1e;
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .empty-state .empty-icon {
+    width: 44px;
+    height: 44px;
+    background: #2a1a1a;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .empty-state h2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #f1f1f1;
+    margin: 0;
+  }
+
+  .empty-state p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+  }
+
+  /* Hotel grid */
+  .hotels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .hotel-card {
+    background: #1e1e1e;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .hotel-card:hover {
+    background: #2a2a2a;
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .hotel-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #1a2535;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hotel-card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f1f1f1;
+    margin: 0 0 4px;
+  }
+
+  .hotel-card .hotel-price {
+    font-size: 15px;
+    font-weight: 500;
+    color: #7FC97F;
+    margin: 0 0 2px;
+  }
+
+  .hotel-card .hotel-location {
+    font-size: 12px;
+    color: #888;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+</style>
+
+<div class="hotels-section">
+
+  <p class="hotels-label">Festival stays</p>
+  <h1 class="hotels-heading">Hotels in <%= city %> for <%= festivalName %></h1>
+
+  <!-- Filter form -->
+  <form method="GET" class="filter-bar">
+    <input
+      type="number"
+      name="maxPrice"
+      placeholder="Max price (₹)"
+      value="<%= query.maxPrice || '' %>"
+    />
+    <button type="submit">Apply filter</button>
+  </form>
+
+  <hr class="divider">
+
+  <!-- Empty state -->
+  <% if (hotels.length === 0) { %>
+
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="7" stroke="#E24B4A" stroke-width="1.5"/>
+          <path d="M7 7l6 6M13 7l-6 6" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>No hotels found</h2>
+      <p>No hotels available in <%= city %> for <%= festivalName %>. Try adjusting your filter.</p>
+    </div>
+
+  <% } else { %>
+
+    <!-- Hotel cards -->
+    <div class="hotels-grid">
+      <% hotels.forEach(hotel => { %>
+        <div class="hotel-card">
+          <div class="hotel-card-icon">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <rect x="3" y="9" width="14" height="9" rx="1.5" stroke="#378ADD" stroke-width="1.5"/>
+              <path d="M1 9l9-7 9 7" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="8" y="13" width="4" height="5" rx="0.5" fill="#378ADD" opacity="0.4"/>
+            </svg>
+          </div>
+          <div>
+            <h3><%= hotel.title %></h3>
+            <p class="hotel-price">₹ <%= hotel.price %></p>
+            <p class="hotel-location">
+              <svg width="11" height="11" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2C7.24 2 5 4.24 5 7c0 4 5 11 5 11s5-7 5-11c0-2.76-2.24-5-5-5z" fill="#888"/>
+                <circle cx="10" cy="7" r="2" fill="#1e1e1e"/>
+              </svg>
+              <%= hotel.location %>
+            </p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+  <% } %>
+
+</div>

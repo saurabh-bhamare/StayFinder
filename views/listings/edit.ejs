@@ -1,0 +1,218 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+:root {
+  --bg: #000000; --card: #0a0a0a; --card2: #111111;
+  --border: #222222; --border-dash: #2a2a2a;
+  --text: #f0f0f0; --sub: #888888; --label: #999999;
+  --input-bg: #111111; --input-border: #2a2a2a; --input-focus: #444444;
+  --placeholder: #444444; --divider: #1a1a1a;
+}
+
+body { background: var(--bg); }
+
+.edit-container { max-width: 680px; margin: 0 auto; padding: 40px 16px; }
+
+.page-title { font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+.page-sub   { font-size: 13px; color: var(--sub); margin-bottom: 32px; }
+
+.edit-card {
+  background: var(--card); border: 0.5px solid var(--border);
+  border-radius: 20px; padding: 28px 28px 32px;
+}
+
+.section-label {
+  font-size: 11px; font-weight: 500; color: var(--label);
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--divider);
+}
+
+.field { margin-bottom: 18px; }
+
+.field label {
+  display: block; font-size: 12px; font-weight: 500;
+  color: var(--label); letter-spacing: .04em;
+  text-transform: uppercase; margin-bottom: 7px;
+}
+
+.field input, .field textarea, .field select {
+  width: 100%; padding: 10px 14px;
+  background: var(--input-bg); border: 0.5px solid var(--input-border);
+  border-radius: 10px; color: var(--text); font-size: 14px;
+  outline: none; transition: .15s; -webkit-appearance: none;
+}
+.field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.field input::placeholder,
+.field textarea::placeholder { color: var(--placeholder); }
+.field input:hover, .field textarea:hover,
+.field select:hover  { border-color: #333333; }
+.field input:focus, .field textarea:focus,
+.field select:focus  { border-color: var(--input-focus); background: #161616; }
+
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
+}
+.field select option { background: #111; color: var(--text); }
+
+.input-prefix { position: relative; display: flex; align-items: center; }
+.prefix-symbol { position: absolute; left: 13px; font-size: 14px; color: var(--sub); pointer-events: none; }
+.input-prefix input { padding-left: 28px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.img-preview {
+  width: 100%; height: 160px; object-fit: cover;
+  border-radius: 10px; border: 0.5px solid var(--border);
+  display: block; margin-bottom: 10px;
+}
+.no-img {
+  width: 100%; height: 90px; border: 0.5px dashed var(--border-dash);
+  border-radius: 10px; display: flex; align-items: center;
+  justify-content: center; color: var(--sub); font-size: 13px; margin-bottom: 10px;
+}
+
+.upload-zone {
+  display: flex; align-items: center; gap: 12px;
+  border: 0.5px dashed var(--border-dash); border-radius: 10px;
+  padding: 12px 14px; background: #0d0d0d; cursor: pointer; transition: .15s;
+}
+.upload-zone:hover { background: #141414; }
+.upload-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #1a1a1a; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.upload-text strong { font-size: 13px; font-weight: 500; color: var(--text); display: block; margin-bottom: 1px; }
+.upload-text span   { font-size: 11px; color: var(--sub); }
+
+.edit-divider { border: none; border-top: 0.5px solid var(--divider); margin: 24px 0; }
+
+.btn-submit {
+  width: 100%; padding: 13px; border-radius: 10px;
+  background: #f0f0f0; color: #000; border: none;
+  font-size: 14px; font-weight: 500; cursor: pointer; transition: .15s;
+}
+.btn-submit:hover { background: #ffffff; }
+
+.btn-cancel {
+  width: 100%; padding: 11px; border-radius: 10px;
+  background: transparent; color: var(--sub);
+  border: 0.5px solid #222222; font-size: 14px;
+  cursor: pointer; transition: .15s; margin-top: 10px;
+  display: block; text-align: center; text-decoration: none;
+}
+.btn-cancel:hover { background: #111111; color: var(--text); }
+
+@media (max-width: 500px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+
+<div class="edit-container">
+  <div class="page-title">Edit listing</div>
+  <div class="page-sub">Update your property details below</div>
+
+  <div class="edit-card">
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT"
+      novalidate class="needs-validation" enctype="multipart/form-data">
+
+      <!-- Basic info -->
+      <div class="section-label">Basic info</div>
+
+      <div class="field">
+        <label>Category</label>
+        <select name="listing[category]" required>
+          <option value="">Select a category</option>
+          <option value="Trending"  <%= listing.category === "Trending"  ? "selected" : "" %>>Trending</option>
+          <option value="Mountains" <%= listing.category === "Mountains" ? "selected" : "" %>>Mountains</option>
+          <option value="Camping"   <%= listing.category === "Camping"   ? "selected" : "" %>>Camping</option>
+          <option value="Beach"     <%= listing.category === "Beach"     ? "selected" : "" %>>Beach</option>
+          <option value="Luxury"    <%= listing.category === "Luxury"    ? "selected" : "" %>>Luxury</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Title</label>
+        <input type="text" name="listing[title]" value="<%= listing.title %>" placeholder="Give your listing a title" required>
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea name="listing[description]" placeholder="Describe your place..." required><%= listing.description %></textarea>
+      </div>
+
+      <hr class="edit-divider">
+
+      <!-- Media -->
+      <div class="section-label">Media</div>
+
+      <div class="field">
+        <label>Current image</label>
+        <% if (listing.image && listing.image.url) { %>
+          <img src="<%= listing.image.url %>" class="img-preview" alt="listing image">
+        <% } else { %>
+          <div class="no-img">No image uploaded yet</div>
+        <% } %>
+      </div>
+
+      <div class="field">
+        <label>Upload new image</label>
+        <label class="upload-zone">
+          <div class="upload-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="upload-text">
+            <strong>Choose a file</strong>
+            <span>PNG or JPG, max 5MB</span>
+          </div>
+          <input type="file" name="image" style="display:none" onchange="this.closest('label').querySelector('strong').textContent = this.files[0]?.name || 'Choose a file'">
+        </label>
+      </div>
+
+      <hr class="edit-divider">
+
+      <!-- Pricing & Location -->
+      <div class="section-label">Pricing & location</div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>Price per night</label>
+          <div class="input-prefix">
+            <span class="prefix-symbol">₹</span>
+            <input type="number" name="listing[price]" value="<%= listing.price %>" placeholder="0" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Country</label>
+          <input type="text" name="listing[country]" value="<%= listing.country %>" placeholder="Country" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Location</label>
+        <input type="text" name="listing[location]" value="<%= listing.location %>" placeholder="City, region" required>
+      </div>
+
+      <hr class="edit-divider">
+
+      <button type="submit" class="btn-submit">Update listing</button>
+    </form>
+
+    <a href="/listings/<%= listing._id %>" class="btn-cancel">Cancel</a>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  document.querySelectorAll('.needs-validation').forEach(form => {
+    form.addEventListener('submit', e => {
+      if (!form.checkValidity()) { e.preventDefault(); e.stopPropagation(); }
+      form.classList.add('was-validated');
+    });
+  });
+})();
+</script>

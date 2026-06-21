@@ -1,0 +1,7 @@
+<% if (user.avatar?.url) { %>
+  <img src="<%= user.avatar.url %>" alt="avatar">
+<% } else { %>
+  <div class="avatar-fallback">
+    <%= user.username.charAt(0).toUpperCase() %>
+  </div>
+<% } %>

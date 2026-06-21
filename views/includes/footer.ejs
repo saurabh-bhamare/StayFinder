@@ -1,0 +1,253 @@
+<footer class="footer">
+  <div class="footer-inner">
+
+    <!-- TOP: brand + columns -->
+    <div class="footer-top">
+
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2C9.373 2 4 7.373 4 14c0 5.018 2.944 9.36 7.2 11.466L16 30l4.8-4.534C25.056 23.36 28 19.018 28 14 28 7.373 22.627 2 16 2z" fill="#e8503a"/>
+            <circle cx="16" cy="14" r="4" fill="white"/>
+          </svg>
+          <span>Wanderlust</span>
+        </div>
+        <p class="brand-tagline">Find your next escape.<br>Every stay, a story.</p>
+        <div class="social-row">
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- LINK COLUMNS -->
+      <div class="footer-cols">
+
+        <div class="footer-col">
+          <h6>Support</h6>
+          <a href="#">Help Center</a>
+          <a href="#">Safety information</a>
+          <a href="#">Cancellation options</a>
+          <a href="#">Report a concern</a>
+        </div>
+
+        <div class="footer-col">
+          <h6>Hosting</h6>
+          <a href="#">Become a host</a>
+          <a href="#">AirCover for Hosts</a>
+          <a href="#">Hosting resources</a>
+          <a href="#">Community forum</a>
+        </div>
+
+        <div class="footer-col">
+          <h6>Company</h6>
+          <a href="#">About us</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+          <a href="#">Investors</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="footer-divider"></div>
+
+    <!-- BOTTOM BAR -->
+    <div class="footer-bottom">
+      <span class="copyright">© 2026 Wanderlust, Inc.</span>
+      <div class="legal-links">
+        <a href="/privacy">Privacy</a>
+        <span class="dot">·</span>
+        <a href="/terms">Terms</a>
+        <span class="dot">·</span>
+        <a href="#">Sitemap</a>
+      </div>
+      <div class="locale-btn">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        English (IN)
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+.footer {
+  background: #0f0e0d;
+  color: #a09890;
+  font-family: 'Outfit', -apple-system, sans-serif;
+  margin-top: 0;
+  border-top: 1px solid rgba(240,236,230,0.08);
+}
+
+.footer-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 64px 40px 32px;
+}
+
+/* ── TOP SECTION ── */
+.footer-top {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 60px;
+  margin-bottom: 48px;
+}
+
+/* ── BRAND ── */
+.footer-brand {}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.brand-logo span {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f0ece6;
+  letter-spacing: -0.3px;
+}
+
+.brand-tagline {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #5a534c;
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+.social-row {
+  display: flex;
+  gap: 8px;
+}
+
+.social-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(240,236,230,0.12);
+  background: rgba(240,236,230,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a09890;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.social-btn:hover {
+  background: #e8503a;
+  border-color: #e8503a;
+  color: white;
+}
+
+/* ── LINK COLUMNS ── */
+.footer-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.footer-col h6 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f0ece6;
+  margin-bottom: 18px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 13.5px;
+  color: #5a534c;
+  text-decoration: none;
+  margin-bottom: 11px;
+  font-weight: 400;
+  transition: color 0.18s;
+  line-height: 1;
+}
+
+.footer-col a:hover { color: #f0ece6; }
+
+/* ── DIVIDER ── */
+.footer-divider {
+  height: 1px;
+  background: rgba(240,236,230,0.07);
+  margin-bottom: 28px;
+}
+
+/* ── BOTTOM BAR ── */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.copyright {
+  font-size: 12.5px;
+  color: #3d3830;
+}
+
+.legal-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+}
+
+.legal-links a {
+  color: #5a534c;
+  text-decoration: none;
+  transition: color 0.18s;
+}
+
+.legal-links a:hover { color: #f0ece6; }
+
+.dot { color: #2a2724; }
+
+.locale-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: #5a534c;
+  border: 1px solid rgba(240,236,230,0.1);
+  padding: 7px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.locale-btn:hover {
+  border-color: rgba(240,236,230,0.25);
+  color: #a09890;
+}
+
+@media (max-width: 768px) {
+  .footer-inner { padding: 48px 20px 28px; }
+  .footer-top { grid-template-columns: 1fr; gap: 40px; }
+  .footer-cols { grid-template-columns: repeat(2, 1fr); }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+
+@media (max-width: 480px) {
+  .footer-cols { grid-template-columns: 1fr; }
+}
+</style>

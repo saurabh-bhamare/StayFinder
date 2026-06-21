@@ -1,0 +1,226 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+:root {
+  --bg: #000000; --card: #0a0a0a; --border: #222222;
+  --border-dash: #2a2a2a; --text: #f0f0f0; --sub: #888888;
+  --label: #999999; --input-bg: #111111; --input-border: #2a2a2a;
+  --input-focus: #444444; --placeholder: #444444; --divider: #1a1a1a;
+  --accent: #FF385C; --accent-hover: #e31c5f;
+}
+
+body { background: var(--bg); }
+
+.create-container { max-width: 640px; margin: 0 auto; padding: 40px 16px; }
+
+.page-title { font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+.page-sub   { font-size: 13px; color: var(--sub); margin-bottom: 28px; }
+
+.create-card {
+  background: var(--card); border: 0.5px solid var(--border);
+  border-radius: 20px; padding: 28px 28px 32px;
+}
+
+.sec-label {
+  font-size: 11px; font-weight: 500; color: var(--label);
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--divider);
+}
+
+/* Category chips */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-bottom: 22px;
+}
+.cat-chip input { display: none; }
+.cat-chip label {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 5px; padding: 12px 8px;
+  background: var(--input-bg); border: 0.5px solid var(--input-border);
+  border-radius: 10px; cursor: pointer; font-size: 12px;
+  color: var(--sub); transition: .15s; text-align: center;
+}
+.cat-chip label:hover { background: #161616; border-color: #333; color: var(--text); }
+.cat-chip input:checked + label {
+  background: #1a0608; border-color: var(--accent); color: var(--text);
+}
+.cat-icon { font-size: 18px; }
+
+/* Fields */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block; font-size: 12px; font-weight: 500;
+  color: var(--label); letter-spacing: .04em;
+  text-transform: uppercase; margin-bottom: 7px;
+}
+.field input, .field textarea, .field select {
+  width: 100%; padding: 10px 14px;
+  background: var(--input-bg); border: 0.5px solid var(--input-border);
+  border-radius: 10px; color: var(--text); font-size: 14px;
+  outline: none; transition: .15s; -webkit-appearance: none; font-family: inherit;
+}
+.field textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
+.field input::placeholder, .field textarea::placeholder { color: var(--placeholder); }
+.field input:hover, .field textarea:hover { border-color: #333333; }
+.field input:focus, .field textarea:focus { border-color: var(--input-focus); background: #161616; }
+
+.prefix-wrap { position: relative; display: flex; align-items: center; }
+.prefix-sym  { position: absolute; left: 13px; font-size: 14px; color: var(--sub); pointer-events: none; }
+.prefix-wrap input { padding-left: 28px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* Upload zone */
+.upload-zone {
+  display: flex; align-items: center; gap: 12px;
+  border: 0.5px dashed var(--border-dash); border-radius: 10px;
+  padding: 13px 15px; background: #0d0d0d; cursor: pointer; transition: .15s; width: 100%;
+}
+.upload-zone:hover { background: #141414; }
+.upload-ico {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #1a1a1a; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.upload-txt strong { font-size: 13px; font-weight: 500; color: var(--text); display: block; margin-bottom: 1px; }
+.upload-txt span   { font-size: 11px; color: var(--sub); }
+
+.create-divider { border: none; border-top: 0.5px solid var(--divider); margin: 22px 0; }
+
+.btn-submit {
+  width: 100%; padding: 13px; border-radius: 10px;
+  background: var(--accent); color: #fff; border: none;
+  font-size: 14px; font-weight: 500; cursor: pointer; transition: .15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-submit:hover { background: var(--accent-hover); }
+
+.btn-cancel {
+  width: 100%; padding: 11px; border-radius: 10px;
+  background: transparent; color: var(--sub);
+  border: 0.5px solid #222222; font-size: 14px;
+  cursor: pointer; transition: .15s; margin-top: 10px;
+  display: block; text-align: center; text-decoration: none;
+}
+.btn-cancel:hover { background: #111111; color: var(--text); }
+
+@media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+
+<div class="create-container">
+  <div class="page-title">Create a new listing</div>
+  <div class="page-sub">Fill in the details to publish your property</div>
+
+  <div class="create-card">
+    <form method="POST" action="/listings" enctype="multipart/form-data"
+      novalidate class="needs-validation">
+
+      <!-- Category chips -->
+      <div class="sec-label">Category</div>
+      <div class="cat-grid">
+        <% const cats = [
+          {val:'Trending', icon:'🔥'}, {val:'Mountains', icon:'⛰️'},
+          {val:'Camping',  icon:'⛺'}, {val:'Beach',     icon:'🏖️'},
+          {val:'Luxury',   icon:'💎'}, {val:'Forest',    icon:'🌲'},
+          {val:'City',     icon:'🏙️'}, {val:'Farm',      icon:'🌾'},
+          {val:'Lake',     icon:'🏞️'}
+        ]; %>
+        <% cats.forEach((c, i) => { %>
+          <div class="cat-chip">
+            <input type="radio" name="listing[category]" id="cat<%= i %>" value="<%= c.val %>" required>
+            <label for="cat<%= i %>">
+              <span class="cat-icon"><%= c.icon %></span>
+              <%= c.val %>
+            </label>
+          </div>
+        <% }) %>
+      </div>
+
+
+      <!-- Basic info -->
+      <div class="sec-label">Basic info</div>
+
+      <div class="field">
+        <label>Title</label>
+        <input type="text" name="listing[title]" placeholder="Give your listing a catchy title" required>
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea name="listing[description]" placeholder="Describe your place — what makes it special?" required></textarea>
+      </div>
+
+      <hr class="create-divider">
+
+      <!-- Media -->
+      <div class="sec-label">Media</div>
+
+      <div class="field">
+        <label>Upload image</label>
+        <label class="upload-zone">
+          <div class="upload-ico">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="upload-txt">
+            <strong id="file-name">Choose a file</strong>
+            <span>PNG or JPG, max 5MB</span>
+          </div>
+          <input type="file" name="image" style="display:none" required>
+            onchange="document.getElementById('file-name').textContent = this.files[0]?.name || 'Choose a file'">
+        </label>
+      </div>
+
+      <hr class="create-divider">
+
+      <!-- Pricing & Location -->
+      <div class="sec-label">Pricing & location</div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>Price per night</label>
+          <div class="prefix-wrap">
+            <span class="prefix-sym">₹</span>
+            <input type="number" name="listing[price]" placeholder="0" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Country</label>
+          <input type="text" name="listing[country]" placeholder="Country" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Location</label>
+        <input type="text" name="listing[location]" placeholder="City, region or address" required>
+      </div>
+
+      <hr class="create-divider">
+
+      <button type="submit" class="btn-submit">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add listing
+      </button>
+    </form>
+
+    <a href="/listings" class="btn-cancel">Cancel</a>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  document.querySelectorAll('.needs-validation').forEach(form => {
+    form.addEventListener('submit', e => {
+      if (!form.checkValidity()) { e.preventDefault(); e.stopPropagation(); }
+      form.classList.add('was-validated');
+    });
+  });
+})();
+</script>

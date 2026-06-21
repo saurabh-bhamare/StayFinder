@@ -1,0 +1,152 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+:root {
+  --bg: #000000;
+  --card: #0a0a0a;
+  --card-hover: #111111;
+  --border: #1e1e1e;
+  --text: #f0f0f0;
+  --sub: #888888;
+  --price: #cccccc;
+  --accent: #FF385C;
+  --accent-hover: #e31c5f;
+  --btn-view: #1a1a1a;
+  --btn-view-hover: #262626;
+}
+
+body { background: var(--bg); }
+
+.mylist-container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+.page-header {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 32px;
+}
+
+.page-title { font-size: 22px; font-weight: 500; color: var(--text); }
+
+.count-badge {
+  font-size: 12px; color: var(--sub);
+  background: #111111; border: 0.5px solid #222222;
+  padding: 4px 12px; border-radius: 99px;
+}
+
+.empty-state { text-align: center; padding: 80px 0; color: var(--sub); }
+.empty-icon  { font-size: 40px; margin-bottom: 12px; opacity: .3; }
+
+.mylist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 24px;
+}
+
+.mylist-card {
+  background: var(--card);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: .2s ease;
+}
+
+.mylist-card:hover {
+  background: var(--card-hover);
+  border-color: #2a2a2a;
+  transform: translateY(-2px);
+}
+
+.image-wrapper { position: relative; width: 100%; height: 210px; background: #111; overflow: hidden; }
+
+.mylist-img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block; transition: transform .3s;
+}
+.mylist-card:hover .mylist-img { transform: scale(1.03); }
+
+.card-body { padding: 14px 16px 16px; }
+
+.listing-title {
+  font-size: 14px; font-weight: 500; color: var(--text);
+  margin-bottom: 4px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+
+.listing-loc {
+  font-size: 12px; color: var(--sub); margin-bottom: 10px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.listing-price { font-size: 14px; color: var(--price); margin-bottom: 14px; }
+.listing-price strong { font-weight: 500; color: var(--text); font-size: 15px; }
+
+.btn-row { display: flex; gap: 8px; }
+
+.btn-view {
+  flex: 1; padding: 9px 0; border-radius: 8px;
+  background: var(--btn-view); color: var(--sub);
+  border: 0.5px solid #222222; font-size: 13px;
+  text-align: center; text-decoration: none; transition: .15s;
+}
+.btn-view:hover { background: var(--btn-view-hover); color: var(--text); border-color: #333; }
+
+.btn-edit {
+  flex: 1; padding: 9px 0; border-radius: 8px;
+  background: var(--accent); color: #fff;
+  border: none; font-size: 13px;
+  text-align: center; text-decoration: none; transition: .15s;
+}
+.btn-edit:hover { background: var(--accent-hover); }
+</style>
+
+<div class="container mylist-container">
+
+  <div class="page-header">
+    <div class="page-title">My listings</div>
+    <% if (listings && listings.length > 0) { %>
+      <span class="count-badge"><%= listings.length %> propert<%= listings.length === 1 ? 'y' : 'ies' %></span>
+    <% } %>
+  </div>
+
+  <% if (!listings || listings.length === 0) { %>
+    <div class="empty-state">
+      <div class="empty-icon">🏠</div>
+      <p>No listings added yet.</p>
+    </div>
+  <% } else { %>
+
+    <div class="mylist-grid">
+      <% listings.forEach(listing => { %>
+
+        <div class="mylist-card">
+
+          <div class="image-wrapper">
+            <img src="<%= listing.image?.url %>" class="mylist-img" alt="<%= listing.title %>">
+          </div>
+
+          <div class="card-body">
+            <div class="listing-title"><%= listing.title %></div>
+            <div class="listing-loc"><%= listing.location %>, <%= listing.country %></div>
+
+            <div class="listing-price">
+              <strong>₹<%= listing.price.toLocaleString("en-IN") %></strong> / night
+            </div>
+
+            <div class="btn-row">
+  <!-- EDIT (replacing View) -->
+  <a href="/listings/<%= listing._id %>/edit" class="btn-view">Edit</a>
+
+  <!-- DELETE (replacing Edit) -->
+  <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" style="flex:1;">
+    <button type="submit" class="btn-edit" style="width:100%;">Delete</button>
+  </form>
+</div>
+          </div>
+
+        </div>
+
+      <% }) %>
+    </div>
+
+  <% } %>
+
+</div>

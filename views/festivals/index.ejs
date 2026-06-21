@@ -1,0 +1,137 @@
+<style>
+  .festival-section {
+    padding: 1.5rem 0;
+  }
+
+  .festival-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888;
+    margin: 0 0 0.5rem;
+  }
+
+  .festival-heading {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 1.5rem;
+    color: #f1f1f1;
+  }
+
+  .festival-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .festival-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    background: #1e1e1e;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
+    transition: border-color 0.15s, background 0.15s;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .festival-card:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: #2a2a2a;
+  }
+
+  .festival-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .festival-card p {
+    margin: 0;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f1f1f1;
+    margin-bottom: 2px;
+  }
+
+  .card-sub {
+    font-size: 12px;
+    color: #888;
+  }
+
+  /* Outer page dark background */
+  body {
+    background: #121212;
+  }
+</style>
+
+<div class="festival-section">
+  <p class="festival-label">Browse by occasion</p>
+  <h1 class="festival-heading">Explore by festivals</h1>
+
+  <div class="festival-grid">
+
+    <a href="/listings/festivals/ganpati" class="festival-card">
+      <div class="festival-icon" style="background: #2e2410;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="7" fill="#EF9F27"/>
+          <path d="M10 4c0 0 3 2.5 3 6s-3 6-3 6-3-2.5-3-6 3-6 3-6z" fill="#FAC775"/>
+        </svg>
+      </div>
+      <div>
+        <p class="card-title">Ganpati festival</p>
+        <p class="card-sub">Decorations & puja items</p>
+      </div>
+    </a>
+
+    <a href="/listings/festivals/Diwali" class="festival-card">
+      <div class="festival-icon" style="background: #2e1810;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 3 L11.5 8 L16 8 L12.5 11 L14 16 L10 13 L6 16 L7.5 11 L4 8 L8.5 8 Z" fill="#D85A30"/>
+        </svg>
+      </div>
+      <div>
+        <p class="card-title">Diwali special</p>
+        <p class="card-sub">Lights, sweets & gifts</p>
+      </div>
+    </a>
+
+    <a href="/listings/festivals/christmas" class="festival-card">
+      <div class="festival-icon" style="background: #162310;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <polygon points="10,3 13,9 17,9 14,13 15,17 10,14.5 5,17 6,13 3,9 7,9" fill="#639922"/>
+          <rect x="9" y="15" width="2" height="3" fill="#854F0B"/>
+        </svg>
+      </div>
+      <div>
+        <p class="card-title">Christmas</p>
+        <p class="card-sub">Gifts & seasonal decor</p>
+      </div>
+    </a>
+
+    <a href="/listings/festivals/newyear" class="festival-card">
+      <div class="festival-icon" style="background: #1e1a38;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="6" stroke="#7F77DD" stroke-width="2" fill="none"/>
+          <path d="M10 6v4l3 2" stroke="#7F77DD" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <p class="card-title">New Year</p>
+        <p class="card-sub">Party essentials & more</p>
+      </div>
+    </a>
+
+  </div>
+</div>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Listings Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-page:       #F5F4F0;
+      --bg-surface:    #FFFFFF;
+      --bg-muted:      #EFEFEB;
+      --text-primary:  #1A1A18;
+      --text-secondary:#6B6B67;
+      --text-hint:     #9E9E9A;
+      --border:        rgba(0,0,0,0.10);
+      --border-hover:  rgba(0,0,0,0.20);
+      --green-bg:      #EAF3DE;
+      --green-text:    #3B6D11;
+      --green-bar:     #639922;
+      --amber-bg:      #FAEEDA;
+      --amber-text:    #854F0B;
+      --radius-md:     8px;
+      --radius-lg:     12px;
+      --radius-xl:     16px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-page:       #1C1C1A;
+        --bg-surface:    #242422;
+        --bg-muted:      #2E2E2C;
+        --text-primary:  #F0EFE8;
+        --text-secondary:#9E9E9A;
+        --text-hint:     #6B6B67;
+        --border:        rgba(255,255,255,0.10);
+        --border-hover:  rgba(255,255,255,0.22);
+        --green-bg:      #173404;
+        --green-text:    #97C459;
+        --green-bar:     #639922;
+        --amber-bg:      #412402;
+        --amber-text:    #EF9F27;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .header-meta {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ── Summary stats ── */
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 1.75rem;
+    }
+    .stat {
+      background: var(--bg-surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-hint);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+    .stat-value.green { color: var(--green-text); }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 0.5px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+    }
+    .filter-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+    .filter-btn.active {
+      background: var(--text-primary);
+      color: var(--bg-surface);
+      border-color: transparent;
+    }
+
+    /* ── Listings grid ── */
+    .listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    /* ── Listing card ── */
+    .card {
+      background: var(--bg-surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color 0.15s, transform 0.15s;
+      animation: fadeUp 0.35s ease both;
+    }
+    .card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .card-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.35;
+      flex: 1;
+      padding-right: 10px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-active  { background: var(--green-bg);  color: var(--green-text); }
+    .badge-paused  { background: var(--amber-bg);  color: var(--amber-text); }
+
+    .divider {
+      height: 0.5px;
+      background: var(--border);
+      margin-bottom: 14px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-hint);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .metric-value {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .metric-value.green { color: var(--green-text); }
+
+    /* ── Progress bar ── */
+    .bar-wrap { margin-bottom: 16px; }
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-hint);
+      margin-bottom: 5px;
+    }
+    .bar-track {
+      height: 4px;
+      background: var(--bg-muted);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--green-bar);
+      width: 0%;
+      transition: width 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    /* ── Card actions ── */
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+    .btn {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 7px 0;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+    }
+    .btn:hover {
+      background: var(--bg-muted);
+      color: var(--text-primary);
+      border-color: var(--border-hover);
+    }
+    .btn-primary {
+      border-color: var(--green-text);
+      color: var(--green-text);
+    }
+    .btn-primary:hover {
+      background: var(--green-bg);
+    }
+
+    /* ── Empty state ── */
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-hint);
+      font-size: 14px;
+    }
+
+    /* ── Loading skeleton ── */
+    .skeleton {
+      background: var(--bg-muted);
+      border-radius: var(--radius-md);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .summary { grid-template-columns: 1fr 1fr; }
+      .summary .stat:last-child { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>My listings</h1>
+      <span class="header-meta" id="date-label"></span>
+    </div>
+
+    <div class="summary">
+      <div class="stat">
+        <div class="stat-label">Total listings</div>
+        <div class="stat-value" id="total-listings">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Total bookings</div>
+        <div class="stat-value" id="total-bookings">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Total revenue</div>
+        <div class="stat-value green" id="total-revenue">—</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="active">Active</button>
+      <button class="filter-btn" data-filter="paused">Paused</button>
+    </div>
+
+    <div class="listings" id="listings-grid"></div>
+
+  </div>
+
+  <script>
+    /* ── Sample data (used if /dashboard-data fetch fails) ── */
+    const SAMPLE_DATA = {
+      listings: [
+        { listingName: "Cozy Studio, Baner",            totalBookings: 34, totalRevenue: 68000,  status: "active" },
+        { listingName: "1BHK near Hinjewadi",           totalBookings: 21, totalRevenue: 42000,  status: "active" },
+        { listingName: "Lake-view Villa, Lavasa",       totalBookings: 9,  totalRevenue: 90000,  status: "paused" },
+        { listingName: "Serviced Apt, Kharadi",         totalBookings: 56, totalRevenue: 112000, status: "active" },
+        { listingName: "Heritage Home, Shivajinagar",   totalBookings: 14, totalRevenue: 56000,  status: "active" },
+        { listingName: "PG Suite, Wakad",               totalBookings: 6,  totalRevenue: 12000,  status: "paused" }
+      ]
+    };
+
+    /* ── State ── */
+    let allListings = [];
+    let currentFilter = "all";
+
+    /* ── Helpers ── */
+    function fmtCurrency(n) {
+      return "₹" + Number(n).toLocaleString("en-IN");
+    }
+
+    /* ── Render summary cards ── */
+    function renderSummary(listings) {
+      document.getElementById("total-listings").textContent  = listings.length;
+      document.getElementById("total-bookings").textContent  = listings.reduce((s, d) => s + d.totalBookings, 0).toLocaleString("en-IN");
+      document.getElementById("total-revenue").textContent   = fmtCurrency(listings.reduce((s, d) => s + d.totalRevenue, 0));
+    }
+
+    /* ── Render listing cards ── */
+    function renderListings(listings) {
+      const grid = document.getElementById("listings-grid");
+      grid.innerHTML = "";
+
+      const filtered = currentFilter === "all"
+        ? listings
+        : listings.filter(l => l.status === currentFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="empty">No listings found for this filter.</div>`;
+        return;
+      }
+
+      const maxBookings = Math.max(...filtered.map(d => d.totalBookings), 1);
+
+      filtered.forEach((item, i) => {
+        const pct = Math.round((item.totalBookings / maxBookings) * 100);
+        const badgeClass = item.status === "active" ? "badge-active" : "badge-paused";
+        const badgeText  = item.status === "active" ? "Active" : "Paused";
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.animationDelay = (i * 0.06) + "s";
+
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="card-name">${item.listingName}</div>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <div class="divider"></div>
+          <div class="metrics">
+            <div>
+              <div class="metric-label">Bookings</div>
+              <div class="metric-value">${item.totalBookings.toLocaleString("en-IN")}</div>
+            </div>
+            <div>
+              <div class="metric-label">Revenue</div>
+              <div class="metric-value green">${fmtCurrency(item.totalRevenue)}</div>
+            </div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-meta">
+              <span>Booking share</span>
+              <span>${pct}%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" data-pct="${pct}"></div>
+            </div>
+          </div>
+         
+        `;
+
+        grid.appendChild(card);
+      });
+
+      /* Animate bars after paint */
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.querySelectorAll(".bar-fill").forEach(el => {
+            el.style.width = el.dataset.pct + "%";
+          });
+        });
+      });
+    }
+
+    /* ── Handlers (wire to your router / modal logic) ── */
+    function handleAnalytics(name) {
+      alert("Analytics for: " + name + "\n\n(Wire this to your analytics page)");
+    }
+    function handleEdit(name) {
+      alert("Edit: " + name + "\n\n(Wire this to your edit form)");
+    }
+
+    /* ── Filter buttons ── */
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.dataset.filter;
+        renderListings(allListings);
+      });
+    });
+
+    /* ── Date label ── */
+    const d = new Date();
+    document.getElementById("date-label").textContent = d.toLocaleDateString("en-IN", {
+      weekday: "long", day: "numeric", month: "long", year: "numeric"
+    });
+
+    /* ── Load data ── */
+    async function loadDashboard() {
+      try {
+        const res = await fetch("/dashboard-data");
+        if (!res.ok) throw new Error("Non-2xx response");
+        const data = await res.json();
+        /* Normalise: add status if your API doesn't include it yet */
+        allListings = data.listings.map(l => ({ status: "active", ...l }));
+      } catch {
+        /* Fallback to sample data when running without a backend */
+        allListings = SAMPLE_DATA.listings;
+      }
+
+      renderSummary(allListings);
+      renderListings(allListings);
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>
