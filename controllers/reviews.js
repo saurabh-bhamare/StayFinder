@@ -1,4 +1,4 @@
-const Reviews = require("../models/Reviews");
+const Reviews = require("../models/reviews");
 const Listing = require("../models/listing");
 const recalcRating = require("../utils/rating");
 
