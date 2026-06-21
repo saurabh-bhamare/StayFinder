@@ -421,3 +421,13 @@ body {
 .alert-custom__close:hover {
   opacity: 1;
 }
+
+.navbar-collapse {
+  gap: 12px;
+}
+
+@media (max-width: 576px) {
+  .filter-pill {
+    font-size: 11px;
+  }
+}

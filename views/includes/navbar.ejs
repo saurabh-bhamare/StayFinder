@@ -395,6 +395,74 @@
     .navbar-collapse { padding-bottom: 12px; gap: 8px; flex-direction: column; align-items: stretch; }
     .nb-nav-link { text-align: center; }
   }
+
+  /* ============================= */
+/* RESPONSIVE FIXES */
+/* ============================= */
+
+@media (max-width: 992px) {
+
+  .search-wrap {
+    max-width: 100%;
+  }
+
+  .search-box {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 20px;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 8px 0;
+  }
+
+  .search-divider {
+    display: none;
+  }
+
+  .filter-pill {
+    width: 48%;
+    justify-content: center;
+  }
+
+  .search-submit {
+    width: 48%;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .navbar {
+    padding: 10px 14px;
+  }
+
+  .brand-wordmark {
+    font-size: 16px;
+  }
+
+  .search-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-pill,
+  .search-submit {
+    width: 100%;
+  }
+
+  .filter-box {
+    width: 100%;
+  }
+
+  .profile-menu-btn {
+    padding: 5px 8px;
+  }
+}
+
 </style>
 
 <nav class="navbar navbar-expand-md sticky-top">
@@ -415,51 +483,52 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarNav">
+    <div class="collapse navbar-collapse" id="navbarNav">
 
-      <!-- SEARCH -->
-      <div class="search-wrap">
-        <form class="search-box" action="/listings" method="GET">
-          <i class="fa-solid fa-magnifying-glass search-icon"></i>
-          <input type="text" name="q" placeholder="Search destinations…" autocomplete="off">
-          <div class="search-divider"></div>
+  <!-- LEFT / CENTER SEARCH -->
+  <div class="search-wrap d-flex justify-content-center">
+    <form class="search-box w-100" action="/listings" method="GET">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
 
-          <!-- FILTER DROPDOWN -->
-          <div class="dropdown">
-            <button type="button" class="filter-pill" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-sliders"></i> Filters
-            </button>
-            <div class="dropdown-menu filter-box">
-              <label class="fbox-heading">Category</label>
-              <select name="category" class="form-select mb-3">
-                <option value="">All categories</option>
-                <option>Trending</option>
-                <option>Beach</option>
-                <option>Camping</option>
-                <option>Mountains</option>
-                <option>City</option>
-              </select>
+      <input type="text" name="q" placeholder="Search destinations…" autocomplete="off">
 
-              <label class="fbox-heading">Price range</label>
-              <div class="price-row mb-3">
-                <input type="number" name="minPrice" class="form-control" placeholder="Min ₹">
-                <input type="number" name="maxPrice" class="form-control" placeholder="Max ₹">
-              </div>
+      <div class="search-divider"></div>
 
-              <button type="submit" class="btn-apply">Apply filters</button>
-            </div>
+      <div class="dropdown">
+        <button type="button" class="filter-pill" data-bs-toggle="dropdown">
+          <i class="fa-solid fa-sliders"></i> Filters
+        </button>
+
+        <div class="dropdown-menu filter-box">
+          <label class="fbox-heading">Category</label>
+          <select name="category" class="form-select mb-3">
+            <option value="">All categories</option>
+            <option>Trending</option>
+            <option>Beach</option>
+            <option>Camping</option>
+            <option>Mountains</option>
+            <option>City</option>
+          </select>
+
+          <label class="fbox-heading">Price range</label>
+          <div class="price-row mb-3">
+            <input type="number" name="minPrice" class="form-control" placeholder="Min ₹">
+            <input type="number" name="maxPrice" class="form-control" placeholder="Max ₹">
           </div>
 
-          <button type="submit" class="search-submit" aria-label="Search">
-            <i class="fa-solid fa-arrow-right"></i>
-          </button>
-        </form>
+          <button type="submit" class="btn-apply">Apply filters</button>
+        </div>
       </div>
 
-    
+      <button type="submit" class="search-submit">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </form>
+  </div>
 
-      <!-- RIGHT: PROFILE -->
-      <div class="d-flex align-items-center">
+  <!-- RIGHT SIDE -->
+  <div class="d-flex align-items-center ms-auto mt-2 mt-md-0">
+    <!-- profile dropdown stays same -->
         <div class="dropdown">
           <button class="profile-menu-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User menu">
             <span class="bars-icon"><i class="fa-solid fa-bars"></i></span>

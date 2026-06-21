@@ -139,6 +139,11 @@ app.get("/demouser", async (req, res, next) => {
   }
 });
 
+app.use((req, res, next) => {
+  res.locals.currUser = req.user || null;
+  next();
+});
+
 // ======================================================
 // ROUTES
 // ======================================================
