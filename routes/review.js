@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });  // IMPORTANT for nested routes
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
-const Review = require("../models/reviews.js");
+const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");   // <-- FIXED (missing import)
 const {validateReview,isLoggedIn,isReviewAuthor}=require("../middleware.js");
 
